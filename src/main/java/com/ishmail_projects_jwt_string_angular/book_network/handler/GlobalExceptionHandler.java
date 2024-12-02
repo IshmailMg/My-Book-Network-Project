@@ -1,5 +1,6 @@
 package com.ishmail_projects_jwt_string_angular.book_network.handler;
 
+import com.ishmail_projects_jwt_string_angular.book_network.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -94,6 +95,17 @@ public class GlobalExceptionHandler {
                 .body(
                         ExceptionResponse.builder()
                                 .businessErrorDescription("Internal error, contact Admin")
+                                .error(exp.getMessage())
+                                .build()
+                )
+                ;
+    }
+    @ExceptionHandler(OperationNotPermittedException.class )
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException exp) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
                                 .error(exp.getMessage())
                                 .build()
                 )
